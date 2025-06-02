@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}داشبورد - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>داشبورد کاربری</h2>
+        <div class="mb-3">
+            <a href="{{ url_for('main.create_record') }}" class="btn btn-primary">ثبت پرونده جدید</a>
+        </div>
+        <div class="card">
+            <div class="card-header">پرونده‌های شما</div>
+            <div class="card-body">
+                {% if records %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>شماره پرونده</th>
+                                    <th>نوع بیماری</th>
+                                    <th>وضعیت</th>
+                                    <th>تاریخ ثبت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in records %}
+                                <tr>
+                                    <td>{{ record.id }}</td>
+                                    <td>{{ record.disease.name }}</td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ record.status }}</span>
+                                    </td>
+                                    <td>{{ record.created_at.strftime('%Y/%m/%d') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('main.view_record', record_id=record.id) }}" class="btn btn-sm btn-outline-primary">مشاهده</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">هنوز پرونده‌ای ثبت نکرده‌اید.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

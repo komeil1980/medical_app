@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}مدیریت کاربران - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>مدیریت کاربران</h2>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>لیست کاربران</span>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>شماره موبایل</th>
+                        <th>ایمیل</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>تاریخ ثبت‌نام</th>
+                        <th>تعداد پرونده</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.email or '-' }}</td>
+                        <td>{{ user.first_name or '-' }}</td>
+                        <td>{{ user.last_name or '-' }}</td>
+                        <td>{{ user.gender or '-' }}</td>
+                        <td>{{ user.registered_at.strftime('%Y/%m/%d') }}</td>
+                        <td>{{ user.records|length }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="#" class="btn btn-outline-primary">مشاهده</a>
+                                <a href="#" class="btn btn-outline-danger">غیرفعال</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

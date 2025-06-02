@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}صفحه اصلی - پلتفرم مشاوره پزشکی{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="jumbotron bg-primary text-white p-5 rounded">
+            <h1 class="display-4">پلتفرم مشاوره پزشکی آنلاین</h1>
+            <p class="lead">دریافت مشاوره تخصصی از بهترین پزشکان کشور</p>
+            <hr class="my-4">
+            <a class="btn btn-light btn-lg" href="{{ url_for('auth.register') }}" role="button">شروع کنید</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">مزایای سیستم</h5>
+                <ul class="list-unstyled">
+                    <li>✅ مشاوره با پزشکان متخصص</li>
+                    <li>✅ ثبت آسان پرونده پزشکی</li>
+                    <li>✅ پیگیری وضعیت درخواست</li>
+                    <li>✅ امنیت بالای اطلاعات</li>
+                </ul>
+                {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary">ثبت‌نام رایگان</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">مرحله ۱</h5>
+                <p class="card-text">ثبت‌نام و ایجاد حساب کاربری</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">مرحله ۲</h5>
+                <p class="card-text">بارگذاری مدارک و ثبت پرونده</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">مرحله ۳</h5>
+                <p class="card-text">دریافت نظر تخصصی پزشکان</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

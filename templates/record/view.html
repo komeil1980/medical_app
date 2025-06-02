@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}مشاهده پرونده - پلتفرم مشاوره پزشکی{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>پرونده شماره {{ record.id }}</h2>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary">بازگشت به داشبورد</a>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>اطلاعات اصلی پرونده</span>
+                    <span class="badge bg-light text-primary">{{ record.status }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>نوع بیماری:</strong> {{ record.disease.name }}</p>
+                        <p><strong>دسته‌بندی:</strong> {{ record.disease.category }}</p>
+                        <p><strong>تاریخ ثبت:</strong> {{ record.created_at.strftime('%Y/%m/%d %H:%M') }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>وضعیت پرونده:</strong> {{ record.status }}</p>
+                        {% if record.assigned_doctor_admin %}
+                        <p><strong>پزشک مسئول:</strong> {{ record.doctor_admin.name or record.doctor_admin.username }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+# templates/record/view.html (ادامه)
+            <div class="card-header">شکایت اصلی و سابقه پزشکی</div>
+            <div class="card-body">
+                <h5>شکایت اصلی:</h5>
+                <p>{{ record.chief_complaint|nl2br|safe }}</p>
+                
+                {% if record.history_notes %}
+                <hr>
+                <h5>سابقه پزشکی:</h5>
+                <p>{{ record.history_notes|nl2br|safe }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">فایل‌های پیوست</div>
+            <div class="card-body">
+                {% if record.files %}
+                <div class="row">
+                    {% for file in record.files %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ file.file_name }}</h6>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {{ (file.file_size / 1024)|round(1) }} KB
+                                        <br>
+                                        آپلود: {{ file.uploaded_at.strftime('%Y/%m/%d') }}
+                                    </small>
+                                </p>
+                                {% if file.description %}
+                                <p class="card-text">{{ file.description }}</p>
+                                {% endif %}
+                                <a href="{{ url_for('static', filename='uploads/' + file.file_path) }}" class="btn btn-sm btn-primary" target="_blank">دانلود</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">فایلی برای این پرونده آپلود نشده است.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if record.opinions %}
+        <div class="card mb-4">
+            <div class="card-header">نظرات پزشکان</div>
+            <div class="card-body">
+                {% for opinion in record.opinions %}
+                <div class="mb-3 p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between">
+                        <h6>{{ opinion.doctor.name or opinion.doctor.username }}</h6>
+                        <small class="text-muted">{{ opinion.created_at.strftime('%Y/%m/%d %H:%M') }}</small>
+                    </div>
+                    <p class="mt-2">{{ opinion.text|nl2br|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if record.final_verdict %}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">نظر نهایی</div>
+            <div class="card-body">
+                <p>{{ record.final_verdict|nl2br|safe }}</p>
+                <small class="text-muted">تاریخ ثبت نظر نهایی: {{ record.final_verdict_date.strftime('%Y/%m/%d %H:%M') }}</small>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if record.status == 'در انتظار پرداخت' %}
+        <div class="alert alert-warning">
+            <h5>نیاز به پرداخت</h5>
+            <p>برای بررسی این پرونده، لطفاً هزینه مشاوره را پرداخت کنید.</p>
+            <a href="{{ url_for('main.payment', record_id=record.id) }}" class="btn btn-primary">پرداخت هزینه مشاوره</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

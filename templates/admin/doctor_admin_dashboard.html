@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}داشبورد ادمین دکتر - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>داشبورد ادمین دکتر</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">پرونده‌های جدید منتظر بررسی</h5>
+            </div>
+            <div class="card-body">
+                {% if new_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیمار</th>
+                                <th>بیماری</th>
+                                <th>تاریخ ثبت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in new_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.patient.phone }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td>{{ record.created_at.strftime('%Y/%m/%d') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.review_record', record_id=record.id) }}" class="btn btn-sm btn-primary">بررسی</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">در حال حاضر پرونده جدیدی برای بررسی وجود ندارد.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">پرونده‌های در حال بررسی توسط شما</h5>
+            </div>
+            <div class="card-body">
+                {% if my_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیمار</th>
+                                <th>بیماری</th>
+                                <th>وضعیت</th>
+                                <th>تعداد نظرات</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in my_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.patient.phone }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td><span class="badge bg-info">{{ record.status }}</span></td>
+                                <td>{{ record.opinions|length }}/{{ record.assigned_doctors|length }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.review_record', record_id=record.id) }}" class="btn btn-sm btn-outline-primary">مشاهده</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">در حال حاضر پرونده‌ای در دست بررسی ندارید.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">پرونده‌های آماده صدور نظر نهایی</h5>
+            </div>
+            <div class="card-body">
+                {% if pending_final_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیمار</th>
+                                <th>بیماری</th>
+                                <th>تعداد نظرات</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in pending_final_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.patient.phone }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td>{{ record.opinions|length }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.review_record', record_id=record.id) }}" class="btn btn-sm btn-success">صدور نظر نهایی</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">در حال حاضر پرونده‌ای منتظر صدور نظر نهایی نیست.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}داشبورد پزشک - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>داشبورد پزشک</h2>
+        <p>خوش آمدید {{ current_user.name or current_user.username }}</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">پرونده‌های جدید برای بررسی</h5>
+            </div>
+            <div class="card-body">
+                {% if new_assigned_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیماری</th>
+                                <th>تاریخ ارجاع</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in new_assigned_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td>{{ record.created_at.strftime('%Y/%m/%d') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.submit_opinion', record_id=record.id) }}" class="btn btn-sm btn-primary">بررسی و ثبت نظر</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">در حال حاضر پرونده جدیدی برای بررسی ندارید.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">پرونده‌های بررسی شده</h5>
+            </div>
+            <div class="card-body">
+                {% if reviewed_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیماری</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ بررسی</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in reviewed_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td><span class="badge bg-info">{{ record.status }}</span></td>
+                                <td>
+                                    {% for opinion in record.opinions %}
+                                        {% if opinion.doctor_id == current_user.id %}
+                                            {{ opinion.created_at.strftime('%Y/%m/%d') }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.submit_opinion', record_id=record.id) }}" class="btn btn-sm btn-outline-primary">مشاهده/ویرایش نظر</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">شما هنوز پرونده‌ای را بررسی نکرده‌اید.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

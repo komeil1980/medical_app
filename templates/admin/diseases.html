@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}مدیریت بیماری‌ها - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>مدیریت بیماری‌ها</h2>
+            <a href="{{ url_for('admin.add_disease') }}" class="btn btn-primary">افزودن بیماری جدید</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">لیست بیماری‌ها</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام بیماری</th>
+                        <th>دسته‌بندی</th>
+                        <th>توضیحات</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for disease in diseases %}
+                    <tr>
+                        <td>{{ disease.id }}</td>
+                        <td>{{ disease.name }}</td>
+                        <td>{{ disease.category }}</td>
+                        <td>{{ disease.description|truncate(50) if disease.description else '-' }}</td>
+                        <td>
+                            {% if disease.is_active %}
+                                <span class="badge bg-success">فعال</span>
+                            {% else %}
+                                <span class="badge bg-secondary">غیرفعال</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="#" class="btn btn-outline-primary">ویرایش</a>
+                                {% if disease.is_active %}
+                                    <a href="#" class="btn btn-outline-danger">غیرفعال</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-outline-success">فعال</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

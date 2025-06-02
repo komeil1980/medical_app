@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}داشبورد ادمین - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>داشبورد مدیریت</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4 text-primary">{{ users_count }}</h1>
+                <p class="card-text">تعداد کاربران</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4 text-success">{{ doctors_count }}</h1>
+                <p class="card-text">تعداد پزشکان</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4 text-info">{{ records_count }}</h1>
+                <p class="card-text">تعداد پرونده‌ها</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4 text-warning">{{ "{:,}".format(payments_sum) }}</h1>
+                <p class="card-text">مجموع پرداخت‌ها (تومان)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">پرونده‌های اخیر</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره</th>
+                                <th>بیمار</th>
+                                <th>بیماری</th>
+                                <th>وضعیت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in recent_records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.patient.phone }}</td>
+                                <td>{{ record.disease.name }}</td>
+                                <td><span class="badge bg-primary">{{ record.status }}</span></td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">مشاهده</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">پرداخت‌های اخیر</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>شماره پرونده</th>
+                                <th>مبلغ</th>
+                                <th>تاریخ</th>
+                                <th>وضعیت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in recent_payments %}
+                            <tr>
+                                <td>{{ payment.record_id }}</td>
+                                <td>{{ "{:,}".format(payment.amount) }} تومان</td>
+                                <td>{{ payment.payment_date.strftime('%Y/%m/%d') }}</td>
+                                <td><span class="badge bg-success">{{ payment.status }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

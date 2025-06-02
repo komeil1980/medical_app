@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}مدیریت پزشکان و ادمین‌ها - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>مدیریت پزشکان و ادمین‌ها</h2>
+            <a href="{{ url_for('admin.add_staff') }}" class="btn btn-primary">افزودن جدید</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>لیست پزشکان و ادمین‌ها</span>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام کاربری</th>
+                        <th>نام</th>
+                        <th>نقش</th>
+                        <th>تخصص</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in staff %}
+                    <tr>
+                        <td>{{ member.id }}</td>
+                        <td>{{ member.username }}</td>
+                        <td>{{ member.name or '-' }}</td>
+                        <td>
+                            {% if member.role == 'superadmin' %}
+                                <span class="badge bg-danger">ادمین کل</span>
+                            {% elif member.role == 'doctor_admin' %}
+                                <span class="badge bg-warning">ادمین دکتر</span>
+                            {% else %}
+                                <span class="badge bg-info">پزشک</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ member.specialty or '-' }}</td>
+                        <td>
+                            {% if member.is_active %}
+                                <span class="badge bg-success">فعال</span>
+                            {% else %}
+                                <span class="badge bg-secondary">غیرفعال</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="#" class="btn btn-outline-primary">ویرایش</a>
+                                {% if member.is_active %}
+                                    <a href="#" class="btn btn-outline-danger">غیرفعال</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-outline-success">فعال</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

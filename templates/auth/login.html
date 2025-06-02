@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}ورود - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h4 class="text-center">ورود به سیستم</h4></div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">شماره موبایل</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">ارسال کد تأیید</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}افزودن بیماری جدید - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>افزودن بیماری جدید</h2>
+            <a href="{{ url_for('admin.manage_diseases') }}" class="btn btn-outline-secondary">بازگشت به لیست</a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">اطلاعات بیماری</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">نام بیماری</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="category" class="form-label">دسته‌بندی</label>
+                        <input type="text" class="form-control" id="category" name="category" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">توضیحات</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" checked>
+                        <label class="form-check-label" for="is_active">فعال</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">افزودن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

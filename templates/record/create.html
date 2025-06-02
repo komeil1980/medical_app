@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}ایجاد پرونده جدید - پلتفرم مشاوره پزشکی{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>ثبت پرونده جدید</h2>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="disease_id" class="form-label">نوع بیماری</label>
+                        <select class="form-select" id="disease_id" name="disease_id" required>
+                            <option value="" selected disabled>انتخاب کنید</option>
+                            {% for disease in diseases %}
+                            <option value="{{ disease.id }}">{{ disease.name }} ({{ disease.category }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="chief_complaint" class="form-label">شکایت اصلی</label>
+                        <textarea class="form-control" id="chief_complaint" name="chief_complaint" rows="4" required placeholder="مشکل اصلی که به خاطر آن مراجعه کرده‌اید را شرح دهید..."></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="history_notes" class="form-label">سابقه پزشکی</label>
+                        <textarea class="form-control" id="history_notes" name="history_notes" rows="4" placeholder="هرگونه سابقه بیماری، داروهای مصرفی و سایر اطلاعات مهم پزشکی را ذکر کنید..."></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="files" class="form-label">بارگذاری مدارک پزشکی</label>
+                        <input class="form-control" type="file" id="files" name="files" multiple>
+                        <small class="text-muted">می‌توانید چندین فایل را انتخاب کنید (حداکثر حجم مجاز برای هر فایل: 10 مگابایت)</small>
+                    </div>
+                    
+                    <div id="file-preview" class="mt-3">
+                        <!-- محل نمایش پیش‌نمایش فایل‌های انتخاب شده -->
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">ثبت پرونده</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('files');
+    const previewContainer = document.getElementById('file-preview');
+    
+    fileInput.addEventListener('change', function() {
+        previewContainer.innerHTML = '';
+        
+        for (const file of this.files) {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'mb-3 p-2 border rounded';
+            
+            // نمایش نام و سایز فایل
+            const fileInfo = document.createElement('p');
+            fileInfo.className = 'mb-2';
+            fileInfo.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            fileDiv.appendChild(fileInfo);
+            
+            // افزودن فیلد توضیحات برای هر فایل
+            const descriptionLabel = document.createElement('label');
+            descriptionLabel.className = 'form-label';
+            descriptionLabel.textContent = 'توضیحات فایل:';
+            fileDiv.appendChild(descriptionLabel);
+            
+            const descriptionInput = document.createElement('textarea');
+            descriptionInput.className = 'form-control';
+            descriptionInput.name = `description_${file.name}`;
+            descriptionInput.placeholder = 'توضیحات مربوط به این فایل را وارد کنید...';
+            fileDiv.appendChild(descriptionInput);
+            
+            previewContainer.appendChild(fileDiv);
+        }
+    });
+});
+</script>
+{% endblock %}

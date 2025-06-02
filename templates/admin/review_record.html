@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}بررسی پرونده - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>بررسی پرونده شماره {{ record.id }}</h2>
+            {% if current_user.is_doctor_admin() %}
+                <a href="{{ url_for('admin.doctor_admin_dashboard') }}" class="btn btn-outline-secondary">بازگشت به داشبورد</a>
+            {% else %}
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">بازگشت به داشبورد</a>
+            {% endif %}
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>اطلاعات اصلی پرونده</span>
+                    <span class="badge bg-light text-primary">{{ record.status }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>بیمار:</strong> {{ record.patient.phone }}</p>
+                        {% if record.patient.first_name %}
+                            <p><strong>نام و نام خانوادگی:</strong> {{ record.patient.first_name }} {{ record.patient.last_name }}</p>
+                        {% endif %}
+                        {% if record.patient.email %}
+                            <p><strong>ایمیل:</strong> {{ record.patient.email }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>نوع بیماری:</strong> {{ record.disease.name }}</p>
+                        <p><strong>دسته‌بندی:</strong> {{ record.disease.category }}</p>
+                        <p><strong>تاریخ ثبت:</strong> {{ record.created_at.strftime('%Y/%m/%d %H:%M') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">شکایت اصلی و سابقه پزشکی</div>
+            <div class="card-body">
+                <h5>شکایت اصلی:</h5>
+                <p>{{ record.chief_complaint|nl2br|safe }}</p>
+                
+                {% if record.history_notes %}
+                <hr>
+                <h5>سابقه پزشکی:</h5>
+                <p>{{ record.history_notes|nl2br|safe }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">فایل‌های پیوست</div>
+            <div class="card-body">
+                {% if record.files %}
+                <div class="row">
+                    {% for file in record.files %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ file.file_name }}</h6>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {{ (file.file_size / 1024)|round(1) }} KB
+                                        <br>
+                                        آپلود: {{ file.uploaded_at.strftime('%Y/%m/%d') }}
+                                    </small>
+                                </p>
+                                {% if file.description %}
+                                <p class="card-text">{{ file.description }}</p>
+                                {% endif %}
+                                <a href="{{ url_for('static', filename='uploads/' + file.file_path) }}" class="btn btn-sm btn-primary" target="_blank">دانلود</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">فایلی برای این پرونده آپلود نشده است.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- اقدامات مختلف بر اساس وضعیت پرونده -->
+        {% if record.assigned_doctor_admin_id is none %}
+        <div class="card mb-4">
+            <div class="card-header bg-warning">تخصیص پرونده</div>
+            <div class="card-body">
+                <form method="POST">
+                    <p>این پرونده هنوز به ادمین دکتر تخصیص داده نشده است. آیا می‌خواهید آن را به خود تخصیص دهید؟</p>
+                    <input type="hidden" name="action" value="assign">
+                    <button type="submit" class="btn btn-warning">تخصیص به خودم</button>
+                </form>
+            </div>
+        </div>
+        {% elif record.assigned_doctor_admin_id == current_user.id and record.assigned_doctors|length == 0 %}
+        <div class="card mb-4">
+            <div class="card-header bg-info">تخصیص به پزشکان</div>
+            <div class="card-body">
+                <form method="POST">
+                    <p>لطفاً پزشکانی را که می‌خواهید این پرونده را بررسی کنند انتخاب نمایید:</p>
+                    <div class="row">
+                        {% for doctor in doctors %}
+                        <div class="col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="doctor_ids" value="{{ doctor.id }}" id="doctor{{ doctor.id }}">
+                                <label class="form-check-label" for="doctor{{ doctor.id }}">
+                                    {{ doctor.name or doctor.username }} {% if doctor.specialty %}({{ doctor.specialty }}){% endif %}
+                                </label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="action" value="assign_doctors">
+                    <button type="submit" class="btn btn-info mt-3">تخصیص به پزشکان انتخاب شده</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- نظرات پزشکان -->
+        {% if record.opinions %}
+        <div class="card mb-4">
+            <div class="card-header">نظرات پزشکان</div>
+            <div class="card-body">
+                {% for opinion in record.opinions %}
+                <div class="mb-3 p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between">
+                        <h6>{{ opinion.doctor.name or opinion.doctor.username }}</h6>
+                        <small class="text-muted">{{ opinion.created_at.strftime('%Y/%m/%d %H:%M') }}</small>
+                    </div>
+                    <p class="mt-2">{{ opinion.text|nl2br|safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- فرم ثبت نظر نهایی -->
+        {% if record.status == 'در انتظار نظر نهایی' and record.assigned_doctor_admin_id == current_user.id %}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">ثبت نظر نهایی</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="final_verdict" class="form-label">نظر نهایی</label>
+                        <textarea class="form-control" id="final_verdict" name="final_verdict" rows="6" required></textarea>
+                    </div>
+                    <input type="hidden" name="action" value="final_verdict">
+                    <button type="submit" class="btn btn-success">ثبت نظر نهایی</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- نظر نهایی -->
+        {% if record.final_verdict %}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">نظر نهایی</div>
+            <div class="card-body">
+                <p>{{ record.final_verdict|nl2br|safe }}</p>
+                <small class="text-muted">تاریخ ثبت نظر نهایی: {{ record.final_verdict_date.strftime('%Y/%m/%d %H:%M') }}</small>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

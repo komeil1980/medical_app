@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}افزودن پزشک/ادمین جدید - پلتفرم مشاوره پزشکی{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>افزودن پزشک/ادمین جدید</h2>
+            <a href="{{ url_for('admin.manage_staff') }}" class="btn btn-outline-secondary">بازگشت به لیست</a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">اطلاعات پزشک/ادمین</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">نام کاربری</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">رمز عبور</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="role" class="form-label">نقش</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="doctor">پزشک</option>
+                            <option value="doctor_admin">ادمین دکتر</option>
+                            <option value="superadmin">ادمین کل</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">نام و نام خانوادگی</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="specialty" class="form-label">تخصص</label>
+                        <input type="text" class="form-control" id="specialty" name="specialty">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">افزودن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

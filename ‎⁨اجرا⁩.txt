@@ -1,0 +1,3 @@
+cd ~/Desktop/medical_app
+source venv/bin/activate
+python app.py

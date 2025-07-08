@@ -11,6 +11,8 @@ class Admin(UserMixin, db.Model):
     role = db.Column(db.String(20), nullable=False, default='doctor')  # superadmin, doctor_admin, doctor
     name = db.Column(db.String(100), nullable=True)
     specialty = db.Column(db.String(100), nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=True)
+    phone = db.Column(db.String(20), unique=True, nullable=True)
     is_active = db.Column(db.Boolean, default=True)
     
     def __repr__(self):
@@ -22,9 +24,21 @@ class Admin(UserMixin, db.Model):
     
     @password.setter
     def password(self, password):
-        self.password_hash = generate_password_hash(password)
+        if not isinstance(password, str):
+            password = str(password)
+        # اضافه کردن بررسی طول رمز عبور
+        if len(password) < 8:
+            raise ValueError('Password must be at least 8 characters')
+        print(f"Generating hash for password: {password}")
+        self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
     
     def verify_password(self, password):
+        if not isinstance(password, str):
+            password = str(password)
+        print(f"Verifying password: {password} against hash: {self.password_hash}")
+        # اضافه کردن لاگ برای دیباگ
+        print(f"Password: {password}")
+        print(f"Stored hash: {self.password_hash}")
         return check_password_hash(self.password_hash, password)
     
     def is_admin(self):

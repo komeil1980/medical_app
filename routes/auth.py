@@ -120,6 +120,8 @@ def admin_login():
         password = request.form.get('password')
         
         admin = Admin.query.filter_by(username=username).first()
+        import logging
+        logging.warning(f"Login try for {username}: password={password} hash={admin.password_hash if admin else None}")
         
         if not admin or not admin.verify_password(password):
             flash('نام کاربری یا رمز عبور اشتباه است!', 'danger')

@@ -1,7 +1,8 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, session
 from config import Config
 from extensions import db, login_manager
 import os
+from flask_session import Session
 
 # ایجاد پوشه‌های مورد نیاز
 os.makedirs(os.path.join(os.path.dirname(__file__), 'instance'), exist_ok=True)
@@ -20,15 +21,30 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'لطفا وارد حساب کاربری خود شوید'
     
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['PERMANENT_SESSION_LIFETIME'] = 1800  # 30 دقیقه
+    Session(app)
+    
+    @app.before_request
+    def clear_trailing():
+        # حذف session اگر سرور ری‌استارت شود
+        if 'server_restarted' not in session:
+            session.clear()
+            session['server_restarted'] = True
+    
     with app.app_context():
         # ثبت بلوپرینت‌ها
         from routes.main import main_bp
         from routes.auth import auth_bp
         from routes.admin import admin_bp
+        from routes.profile import profile_bp
+        from routes.debug import debug_bp
         
         app.register_blueprint(main_bp)
         app.register_blueprint(auth_bp, url_prefix='/auth')
         app.register_blueprint(admin_bp, url_prefix='/admin')
+        app.register_blueprint(profile_bp)
+        app.register_blueprint(debug_bp)
         
         # ایجاد جداول
         db.create_all()

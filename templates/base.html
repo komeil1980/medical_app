@@ -21,6 +21,9 @@
                         <a class="nav-link" href="{{ url_for('main.index') }}">صفحه اصلی</a>
                     </li>
                     {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('profile.profile') }}">پروفایل</a>
+                        </li>
                         {% if current_user.__class__.__name__ != 'User' %}
                             <!-- منوهای مخصوص ادمین و پزشکان -->
                             {% if current_user.role == 'superadmin' %}
@@ -67,7 +70,7 @@
                                 {% endif %}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">پروفایل</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('profile.profile') }}">پروفایل</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">خروج</a></li>
                             </ul>

@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "install flask",
+            "type": "shell",
+            "command": "/opt/homebrew/bin/python3 -m pip install flask",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -11,3 +11,4 @@ SQLAlchemy==2.0.21
 WTForms==3.0.1
 Pillow==10.0.0
 python-dotenv==1.0.0
+Flask-Session==0.8.0

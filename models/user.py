@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(50), nullable=True)
     gender = db.Column(db.String(10), nullable=True)
     national_id = db.Column(db.String(20), nullable=True)
+    password_hash = db.Column(db.String(128))  # رمز عبور هش‌شده
     otp_code = db.Column(db.String(6), nullable=True)
     otp_expiry = db.Column(db.DateTime, nullable=True)
     registered_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -46,6 +47,14 @@ class User(UserMixin, db.Model):
             return True
         return False
         
+    def set_password(self, password):
+        from werkzeug.security import generate_password_hash
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.password_hash, password)
+
     def get_id(self):
         # بازنویسی متد get_id برای برگرداندن مقدار ساده (بدون پیشوند)
         return str(self.id)

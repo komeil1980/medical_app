@@ -11,71 +11,98 @@
                 <!-- Stepper -->
                 <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab" aria-controls="step1" aria-selected="true">1. فرم اولیه</button>
+                        <button class="nav-link active" id="step1-tab" type="button">1. فرم اولیه</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="step2-tab" type="button" disabled>2. انتخاب خدمات</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="step3-tab" type="button" disabled>3. فرم تکمیل خدمات</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="step4-tab" type="button" disabled>4. بارگذاری اسناد پزشکی</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="step5-tab" type="button" disabled>5. پرداخت</button>
+                        <button class="nav-link" id="step2-tab" type="button">2. انتخاب خدمات</button>
                     </li>
                 </ul>
-                <!-- Step 1 Form -->
-                <form method="POST" autocomplete="off">
-                    <div class="row mb-3">
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <label for="first_name" class="form-label">نام</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                <form method="POST" autocomplete="off" id="multiStepForm">
+                    <div id="step1-section">
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label for="first_name" class="form-label">نام</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label for="last_name" class="form-label">نام خانوادگی</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="email" class="form-label">ایمیل <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <label for="last_name" class="form-label">نام خانوادگی</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        تایید خدمات و شرایط استفاده از Medlinker هستم
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
+                                    <label class="form-check-label" for="privacy">
+                                        می‌پذیرم که اطلاعات من مطابق با خط‌مشی حریم خصوصی Medlinker اداره می‌شود.
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="email" class="form-label">ایمیل <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <!-- کپچا زیر چک‌باکس‌ها -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="captcha_answer" class="form-label">حاصل عبارت زیر را وارد کنید <span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span id="captcha-question" class="fw-bold" style="font-size: 1.1rem;"></span>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-1 d-flex align-items-center justify-content-center" style="font-size:0.85rem;" onclick="generateCaptcha()" title="سوال جدید">
+                                        <i class="bi bi-arrow-clockwise" style="font-size:1em;"></i>
+                                    </button>
+                                </div>
+                                <div class="mb-2" style="max-width: 220px;">
+                                    <input type="text" class="form-control form-control-sm" style="font-size:1rem;" id="captcha_answer" name="captcha_answer" required autocomplete="off" placeholder="پاسخ">
+                                </div>
+                                <input type="hidden" id="captcha_correct" name="captcha_correct" value="">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" id="next-step">بعدی</button>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
-                                <label class="form-check-label" for="terms">
-                                    تایید خدمات و شرایط استفاده از Medlinker هستم
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
-                                <label class="form-check-label" for="privacy">
-                                    می‌پذیرم که اطلاعات من مطابق با خط‌مشی حریم خصوصی Medlinker اداره می‌شود.
-                                </label>
+                    <!-- Step 2: انتخاب خدمات -->
+                    <div id="step2-section" style="display:none;">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7 col-md-10">
+                                <div class="card shadow-sm border-0 p-4 mb-4">
+    <div class="mb-3">
+        <h5 class="fw-bold mb-2">قبل از شروع</h5>
+        <div class="text-secondary" style="font-size:0.98rem;">
+            توصیه می‌کنیم هر گونه مستندات بالینی (به عنوان مثال، هر گونه تشخیص یا گزارش پزشکی قبلی) را تهیه کنید تا به پزشک ما اجازه دهد پیشینه پزشکی بیمار را بهتر بررسی نماید.
+        </div>
+    </div>
+    <h4 class="mb-3">انتخاب بیماری مورد نظر</h4>
+    <div class="alert alert-info py-2 mb-3" style="font-size:0.97rem;">
+        لطفاً بیماری مرتبط با خدمات مورد نیاز خود را انتخاب کنید. این لیست به صورت خودکار با تغییرات پنل مدیریت بروزرسانی می‌شود.
+    </div>
+    <h6 class="mb-3">خدمات پزشکی</h6>
+    <div class="disease-radio-list mb-4">
+                                        {% for disease in diseases %}
+                                        <div class="form-check mb-2 ps-4">
+                                            <input class="form-check-input" type="radio" name="disease_id" id="disease-{{ disease.id }}" value="{{ disease.id }}" required>
+                                            <label class="form-check-label" for="disease-{{ disease.id }}">
+                                                <span class="fw-semibold">{{ disease.name }}</span>
+                                                {% if disease.category %}<span class="text-muted small ms-2">({{ disease.category }})</span>{% endif %}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary px-4" id="prev-step">قبلی</button>
+                                        <button type="submit" class="btn btn-primary px-4">ثبت نهایی</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- کپچا زیر چک‌باکس‌ها -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="captcha_answer" class="form-label">حاصل عبارت زیر را وارد کنید <span class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span id="captcha-question" class="fw-bold" style="font-size: 1.1rem;"></span>
-                                <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-1 d-flex align-items-center justify-content-center" style="font-size:0.85rem;" onclick="generateCaptcha()" title="سوال جدید">
-                                    <i class="bi bi-arrow-clockwise" style="font-size:1em;"></i>
-                                </button>
-                            </div>
-                            <div class="mb-2" style="max-width: 220px;">
-                                <input type="text" class="form-control form-control-sm" style="font-size:1rem;" id="captcha_answer" name="captcha_answer" required autocomplete="off" placeholder="پاسخ">
-                            </div>
-                            <input type="hidden" id="captcha_correct" name="captcha_correct" value="">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">بعدی</button>
                     </div>
                 </form>
             </div>
@@ -98,5 +125,54 @@ document.addEventListener('DOMContentLoaded', function() {
     generateCaptcha();
     document.getElementById('captcha_answer').onpaste = e => e.preventDefault();
 });
+
+// Multi-step form control
+const nextStepButton = document.getElementById('next-step');
+const prevStepButton = document.getElementById('prev-step');
+const step1Section = document.getElementById('step1-section');
+const step2Section = document.getElementById('step2-section');
+const step1Tab = document.getElementById('step1-tab');
+const step2Tab = document.getElementById('step2-tab');
+
+nextStepButton.addEventListener('click', function() {
+    if (validateStep1()) {
+        step1Section.style.display = 'none';
+        step2Section.style.display = 'block';
+        step1Tab.classList.remove('active');
+        step2Tab.classList.add('active');
+    }
+});
+
+prevStepButton.addEventListener('click', function() {
+    step1Section.style.display = 'block';
+    step2Section.style.display = 'none';
+    step1Tab.classList.add('active');
+    step2Tab.classList.remove('active');
+});
+
+function toEnglishDigits(str) {
+    // تبدیل اعداد فارسی و عربی به انگلیسی
+    return str.replace(/[۰-۹]/g, d => String.fromCharCode(d.charCodeAt(0) - 1728))
+              .replace(/[٠-٩]/g, d => String.fromCharCode(d.charCodeAt(0) - 1632));
+}
+
+function validateStep1() {
+    const firstName = document.getElementById('first_name').value;
+    const lastName = document.getElementById('last_name').value;
+    const email = document.getElementById('email').value;
+    const terms = document.getElementById('terms').checked;
+    const privacy = document.getElementById('privacy').checked;
+    let captchaAnswer = document.getElementById('captcha_answer').value;
+    const captchaCorrect = document.getElementById('captcha_correct').value;
+
+    captchaAnswer = toEnglishDigits(captchaAnswer.trim());
+
+    if (firstName && lastName && email && terms && privacy && captchaAnswer === captchaCorrect) {
+        return true;
+    } else {
+        alert('لطفا اطلاعات را به درستی وارد کنید.');
+        return false;
+    }
+}
 </script>
 {% endblock %}

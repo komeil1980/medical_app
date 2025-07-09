@@ -46,6 +46,13 @@ def create_record():
     diseases = Disease.query.filter_by(is_active=True).all()
     
     if request.method == 'POST':
+        # کپچای ریاضی
+        captcha_answer = request.form.get('captcha_answer')
+        captcha_correct = request.form.get('captcha_correct')
+        if not captcha_answer or not captcha_correct or captcha_answer.strip() != captcha_correct.strip():
+            flash('پاسخ کپچا صحیح نیست. لطفاً دوباره تلاش کنید.', 'danger')
+            return render_template('record/create.html', diseases=diseases)
+
         disease_id = request.form.get('disease_id')
         chief_complaint = request.form.get('chief_complaint')
         history_notes = request.form.get('history_notes')

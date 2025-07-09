@@ -6,6 +6,7 @@
         <h4 class="card-title mb-3 text-center">پروفایل کاربر</h4>
         <form method="post">
             {% if user_type == 'user' %}
+                
                 <div class="mb-3">
                     <label class="form-label">نام</label>
                     <input type="text" class="form-control" name="first_name" value="{{ user.first_name or '' }}">
@@ -18,10 +19,7 @@
                     <label class="form-label">ایمیل</label>
                     <input type="email" class="form-control" name="email" value="{{ user.email or '' }}">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">شماره موبایل</label>
-                    <input type="text" class="form-control" name="phone" value="{{ user.phone or '' }}">
-                </div>
+                
                 <div class="mb-3">
                     <label class="form-label">کد ملی</label>
                     <input type="text" class="form-control" name="national_id" value="{{ user.national_id or '' }}">
@@ -55,10 +53,7 @@
                     <label class="form-label">ایمیل</label>
                     <input type="email" class="form-control" name="email" value="{{ user.email or '' }}">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">شماره موبایل</label>
-                    <input type="text" class="form-control" name="phone" value="{{ user.phone or '' }}">
-                </div>
+                
             {% endif %}
             <button type="submit" class="btn btn-success w-100">ذخیره تغییرات</button>
         </form>

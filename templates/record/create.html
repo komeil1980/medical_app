@@ -3,43 +3,80 @@
 {% block title %}ایجاد پرونده جدید - پلتفرم مشاوره پزشکی{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h2>ثبت پرونده جدید</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
         <div class="card">
             <div class="card-body">
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="disease_id" class="form-label">نوع بیماری</label>
-                        <select class="form-select" id="disease_id" name="disease_id" required>
-                            <option value="" selected disabled>انتخاب کنید</option>
-                            {% for disease in diseases %}
-                            <option value="{{ disease.id }}">{{ disease.name }} ({{ disease.category }})</option>
-                            {% endfor %}
-                        </select>
+                <h4 class="mb-4">فرم اولیه</h4>
+                <!-- Stepper -->
+                <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab" aria-controls="step1" aria-selected="true">1. فرم اولیه</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="step2-tab" type="button" disabled>2. انتخاب خدمات</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="step3-tab" type="button" disabled>3. فرم تکمیل خدمات</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="step4-tab" type="button" disabled>4. بارگذاری اسناد پزشکی</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="step5-tab" type="button" disabled>5. پرداخت</button>
+                    </li>
+                </ul>
+                <!-- Step 1 Form -->
+                <form method="POST" autocomplete="off">
+                    <div class="row mb-3">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <label for="first_name" class="form-label">نام</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <label for="last_name" class="form-label">نام خانوادگی</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="email" class="form-label">ایمیل <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="chief_complaint" class="form-label">شکایت اصلی</label>
-                        <textarea class="form-control" id="chief_complaint" name="chief_complaint" rows="4" required placeholder="مشکل اصلی که به خاطر آن مراجعه کرده‌اید را شرح دهید..."></textarea>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    تایید خدمات و شرایط استفاده از Medlinker هستم
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
+                                <label class="form-check-label" for="privacy">
+                                    می‌پذیرم که اطلاعات من مطابق با خط‌مشی حریم خصوصی Medlinker اداره می‌شود.
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="history_notes" class="form-label">سابقه پزشکی</label>
-                        <textarea class="form-control" id="history_notes" name="history_notes" rows="4" placeholder="هرگونه سابقه بیماری، داروهای مصرفی و سایر اطلاعات مهم پزشکی را ذکر کنید..."></textarea>
+                    <!-- کپچا زیر چک‌باکس‌ها -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="captcha_answer" class="form-label">حاصل عبارت زیر را وارد کنید <span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span id="captcha-question" class="fw-bold" style="font-size: 1.1rem;"></span>
+                                <button type="button" class="btn btn-outline-secondary btn-sm px-2 py-1 d-flex align-items-center justify-content-center" style="font-size:0.85rem;" onclick="generateCaptcha()" title="سوال جدید">
+                                    <i class="bi bi-arrow-clockwise" style="font-size:1em;"></i>
+                                </button>
+                            </div>
+                            <div class="mb-2" style="max-width: 220px;">
+                                <input type="text" class="form-control form-control-sm" style="font-size:1rem;" id="captcha_answer" name="captcha_answer" required autocomplete="off" placeholder="پاسخ">
+                            </div>
+                            <input type="hidden" id="captcha_correct" name="captcha_correct" value="">
+                        </div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="files" class="form-label">بارگذاری مدارک پزشکی</label>
-                        <input class="form-control" type="file" id="files" name="files" multiple>
-                        <small class="text-muted">می‌توانید چندین فایل را انتخاب کنید (حداکثر حجم مجاز برای هر فایل: 10 مگابایت)</small>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">بعدی</button>
                     </div>
-                    
-                    <div id="file-preview" class="mt-3">
-                        <!-- محل نمایش پیش‌نمایش فایل‌های انتخاب شده -->
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">ثبت پرونده</button>
                 </form>
             </div>
         </div>
@@ -49,38 +86,17 @@
 
 {% block extra_js %}
 <script>
+function generateCaptcha() {
+    const a = Math.floor(Math.random() * 10) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    document.getElementById('captcha-question').textContent = `${a} + ${b}`;
+    document.getElementById('captcha_answer').dataset.captcha = a + b;
+    document.getElementById('captcha_answer').value = '';
+    document.getElementById('captcha_correct').value = a + b;
+}
 document.addEventListener('DOMContentLoaded', function() {
-    const fileInput = document.getElementById('files');
-    const previewContainer = document.getElementById('file-preview');
-    
-    fileInput.addEventListener('change', function() {
-        previewContainer.innerHTML = '';
-        
-        for (const file of this.files) {
-            const fileDiv = document.createElement('div');
-            fileDiv.className = 'mb-3 p-2 border rounded';
-            
-            // نمایش نام و سایز فایل
-            const fileInfo = document.createElement('p');
-            fileInfo.className = 'mb-2';
-            fileInfo.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-            fileDiv.appendChild(fileInfo);
-            
-            // افزودن فیلد توضیحات برای هر فایل
-            const descriptionLabel = document.createElement('label');
-            descriptionLabel.className = 'form-label';
-            descriptionLabel.textContent = 'توضیحات فایل:';
-            fileDiv.appendChild(descriptionLabel);
-            
-            const descriptionInput = document.createElement('textarea');
-            descriptionInput.className = 'form-control';
-            descriptionInput.name = `description_${file.name}`;
-            descriptionInput.placeholder = 'توضیحات مربوط به این فایل را وارد کنید...';
-            fileDiv.appendChild(descriptionInput);
-            
-            previewContainer.appendChild(fileDiv);
-        }
-    });
+    generateCaptcha();
+    document.getElementById('captcha_answer').onpaste = e => e.preventDefault();
 });
 </script>
 {% endblock %}

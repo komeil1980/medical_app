@@ -8,46 +8,289 @@
             <div class="card">
                 <div class="card-body">
                     <ul class="nav nav-pills mb-4 justify-content-center" id="steps-nav">
-                        <li class="nav-item"><button class="nav-link active" id="step1-tab">۱</button></li>
-                        <li class="nav-item"><button class="nav-link" id="step2-tab">۲</button></li>
-                        <li class="nav-item"><button class="nav-link" id="step3-tab">۳</button></li>
-                        <li class="nav-item"><button class="nav-link" id="step4-tab">۴</button></li>
-                        <li class="nav-item"><button class="nav-link" id="step5-tab">۵</button></li>
-                    </ul>
-                    <div id="step1-section">
-                        <h5 class="mb-4">مرحله ۱</h5>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary" id="next-step-1">بعدی</button>
-                        </div>
-                    </div>
+    <li class="nav-item"><span class="nav-link active" id="step1-tab"><span class="fw-bold">۱</span> فرم اولیه</span></li>
+    <li class="nav-item"><span class="nav-link" id="step2-tab"><span class="fw-bold">۲</span> انتخاب خدمات</span></li>
+    <li class="nav-item"><span class="nav-link" id="step3-tab"><span class="fw-bold">۳</span> فرم کامل پزشکی</span></li>
+    <li class="nav-item"><span class="nav-link" id="step4-tab"><span class="fw-bold">۴</span> بارگذاری اسناد پزشکی</span></li>
+    <li class="nav-item"><span class="nav-link" id="step5-tab"><span class="fw-bold">۵</span> پرداخت</span></li>
+</ul>
+<div id="step1-section">
+    <form id="step1-form" autocomplete="off">
+        <div class="row mb-3">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <label for="first_name" class="form-label">نام <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-light" id="first_name" name="first_name" value="Mohammad komeil" required>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <label for="last_name" class="form-label">نام خانوادگی <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-light" id="last_name" name="last_name" value="NIKNAM" required>
+            </div>
+            <div class="col-md-4">
+                <label for="email" class="form-label">ایمیل <span class="text-danger">*</span></label>
+                <input type="email" class="form-control bg-light" id="email" name="email" value="k.niknam@gmail.com" readonly required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                    <label class="form-check-label" for="terms">
+                        تایید خدمات و شرایط استفاده از Medlinker هستم.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="privacy" name="privacy" required>
+                    <label class="form-check-label" for="privacy">
+                        می‌پذیرم که اطلاعات من مطابق با خط‌مشی حریم خصوصی Medlinker اداره می‌شود.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="captcha_answer" class="form-label">کد امنیتی <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="text" class="form-control text-center bg-light" id="captcha_code" value="714" readonly style="max-width:80px;">
+                    <input type="text" class="form-control text-center" id="captcha_answer" name="captcha_answer" maxlength="4" required style="max-width:80px;">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary" id="next-step-1">بعدی</button>
+        </div>
+    </form>
+</div>
                     <div id="step2-section" style="display:none;">
-                        <h5 class="mb-4">مرحله ۲</h5>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary" id="prev-step-2">قبلی</button>
-                            <button type="button" class="btn btn-primary" id="next-step-2">بعدی</button>
-                        </div>
-                    </div>
+    <div class="mb-4">
+        <div class="d-flex flex-row align-items-center mb-3">
+            <h5 class="mb-0 ms-2 fw-bold">قبل از شروع</h5>
+        </div>
+        <p class="text-muted small mb-4">
+            توصیه می‌کنیم هر گونه مستندات بالینی یا گزارش پزشکی قبلی را تهیه کنید تا با اجازه شما، پزشک بتواند وضعیت شما را بهتر بررسی نماید.
+        </p>
+    </div>
+    <form id="step2-form">
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">خدمات پزشکی <span class="text-danger">*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service1" value="سرطان پستان" required>
+                    <label class="form-check-label" for="service1">سرطان پستان</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service2" value="سرطان دستگاه گوارش">
+                    <label class="form-check-label" for="service2">سرطان دستگاه گوارش</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service3" value="سرطان ریه و مدیاستن">
+                    <label class="form-check-label" for="service3">سرطان ریه و مدیاستن</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service4" value="سرطان سر و گردن">
+                    <label class="form-check-label" for="service4">سرطان سر و گردن</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service5" value="سرطان زنان">
+                    <label class="form-check-label" for="service5">سرطان زنان</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service" id="service6" value="سرطان مغز">
+                    <label class="form-check-label" for="service6">سرطان مغز</label>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-outline-secondary ms-2" id="prev-step-2">قبلی</button>
+            <button type="submit" class="btn btn-primary" id="next-step-2">بعدی</button>
+        </div>
+    </form>
+</div>
                     <div id="step3-section" style="display:none;">
-                        <h5 class="mb-4">مرحله ۳</h5>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary" id="prev-step-3">قبلی</button>
-                            <button type="button" class="btn btn-primary" id="next-step-3">بعدی</button>
-                        </div>
+    <div class="mb-4">
+        <div class="d-flex flex-row align-items-center mb-3">
+            <h5 class="mb-0 ms-2 fw-bold">قبل از شروع</h5>
+        </div>
+        <p class="text-muted small mb-4">
+            توصیه می‌کنیم هر گونه مستندات بالینی یا گزارش پزشکی قبلی را تهیه کنید تا با اجازه شما، پزشک بتواند وضعیت شما را بهتر بررسی نماید.
+        </p>
+    </div>
+    <form id="step3-form" autocomplete="off">
+        <div class="border rounded p-3 mb-4 bg-light-subtle">
+            <h6 class="fw-bold mb-3">اطلاعات عمومی بیمار</h6>
+            <div class="row mb-3">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <label for="patient_first_name" class="form-label">نام <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-light" id="patient_first_name" name="patient_first_name" value="کمیل" required>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <label for="patient_last_name" class="form-label">نام خانوادگی <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-light" id="patient_last_name" name="patient_last_name" value="نیکنام" required>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <label for="birthdate" class="form-label">تاریخ تولد <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-light" id="birthdate" name="birthdate" value="1333" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="phone" class="form-label">تلفن</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><img src="/static/img/iran-flag.png" alt="IR" width="18"></span>
+                        <input type="text" class="form-control bg-light" id="phone" name="phone" value="01512 3456789">
                     </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <label for="gender" class="form-label">جنسیت <span class="text-danger">*</span></label>
+                    <select class="form-select bg-light" id="gender" name="gender" required>
+                        <option value="">انتخاب کنید</option>
+                        <option value="زن" selected>زن</option>
+                        <option value="مرد">مرد</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="country" class="form-label">کشور <span class="text-danger">*</span></label>
+                    <select class="form-select bg-light" id="country" name="country" required>
+                        <option value="ایران" selected>ایران</option>
+                        <option value="">سایر</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="border rounded p-3 mb-4 bg-light-subtle">
+            <h6 class="fw-bold mb-3">اطلاعات پزشکی بیمار</h6>
+            <div class="mb-3">
+                <label class="form-label">بیماری فعلی <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-light" id="current_disease" name="current_disease" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">آیا بیمار در حال حاضر از بیماری‌های حاد رنج می‌برد؟ همه موارد موجود را اعلام کنید.</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute1" name="acute[]"><label class="form-check-label" for="acute1">سرطان</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute2" name="acute[]"><label class="form-check-label" for="acute2">کاهش توده عضلانی</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute3" name="acute[]"><label class="form-check-label" for="acute3">نارسایی احتقانی قلب</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute4" name="acute[]"><label class="form-check-label" for="acute4">نارسایی تنفسی</label></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute5" name="acute[]"><label class="form-check-label" for="acute5">فشار خون بالا</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute6" name="acute[]"><label class="form-check-label" for="acute6">دیابت</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute7" name="acute[]"><label class="form-check-label" for="acute7">سایر بیماری‌های مزمن</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute8" name="acute[]"><label class="form-check-label" for="acute8">اختلالات معده و دستگاه گوارش</label></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute9" name="acute[]"><label class="form-check-label" for="acute9">COPD</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute10" name="acute[]"><label class="form-check-label" for="acute10">سکته قلبی</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="acute11" name="acute[]"><label class="form-check-label" for="acute11">هیچکدام</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">آلرژی موجود</label>
+                <input type="text" class="form-control bg-light" id="allergy" name="allergy" placeholder="نوع یا توضیحات آلرژی های موجود">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">سابقه بیماری خانوادگی</label>
+                <input type="text" class="form-control bg-light" id="family_history" name="family_history" placeholder="مانند سابقه بیماری قلبی، فشار خون، دیابت و غیره">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">تاریخچه بستری شدن در بیمارستان</label>
+                <textarea class="form-control bg-light" id="hospitalization_history" name="hospitalization_history" rows="2" placeholder="جزئیات بستری های گذشته"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">سابقه جراحی</label>
+                <input type="text" class="form-control bg-light" id="surgery_history" name="surgery_history" placeholder="جزئیات و شرح حال جراحی">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">داروهای مصرفی فعلی</label>
+                <input type="text" class="form-control bg-light" id="current_medications" name="current_medications" placeholder="نام داروهای فعلی">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">داروهای مصرفی در گذشته</label>
+                <input type="text" class="form-control bg-light" id="past_medications" name="past_medications" placeholder="نام داروهای گذشته">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" id="prev-step-3">قبلی</button>
+            <button type="submit" class="btn btn-primary" id="next-step-3">بعدی</button>
+        </div>
+    </form>
+</div>
                     <div id="step4-section" style="display:none;">
-                        <h5 class="mb-4">مرحله ۴</h5>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary" id="prev-step-4">قبلی</button>
-                            <button type="button" class="btn btn-primary" id="next-step-4">بعدی</button>
-                        </div>
-                    </div>
+    <div class="mb-4">
+        <h5 class="fw-bold">پرونده های پزشکی</h5>
+        <p class="text-muted small mb-2">
+            بارگذاری مدارک پزشکی برای پزشکان ما جامع ترین دیدگاه و از وضعیت پزشکی شما داشته باشند. روی دکمه آپلود اسناد یا زیر کلیک کنید.
+        </p>
+        <div class="mb-3">
+            <label class="form-label fw-bold">بارگذاری فایل</label>
+            <div class="border rounded bg-light-subtle py-5 text-center position-relative" style="min-height:120px;">
+                <div class="mb-2">
+                    <span class="d-block mb-2" style="font-size:2rem; color:#aaa;"><i class="bi bi-folder2-open"></i></span>
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/folder2-open.svg" alt="آپلود" width="32" class="mb-2">
+                </div>
+                <div class="fw-normal text-muted">برای آپلود فایل، آن را به این قسمت بکشید یا کلیک کنید.<br><span class="small">تا ۵ فایل می‌توانید آپلود کنید.</span></div>
+                <input type="file" id="medical_files" name="medical_files" multiple class="position-absolute w-100 h-100 opacity-0 top-0 start-0" style="cursor:pointer;" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-outline-secondary ms-2" id="prev-step-4">قبلی</button>
+        <button type="button" class="btn btn-primary" id="next-step-4">بعدی</button>
+    </div>
+</div>
                     <div id="step5-section" style="display:none;">
-                        <h5 class="mb-4">مرحله ۵</h5>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary" id="prev-step-5">قبلی</button>
-                            <button type="submit" class="btn btn-success" id="submit-form">ارسال</button>
+    <div class="mb-4">
+        <h5 class="fw-bold">پرداخت از طریق کارت به کارت</h5>
+        <div class="row">
+            <div class="col-md-7">
+                <form id="step5-form" autocomplete="off">
+                    <h6 class="fw-bold mb-3">ثبت اطلاعات پرداختی</h6>
+                    <div class="mb-3">
+                        <label for="last4" class="form-label">چهار رقم آخر کارت <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="last4" name="last4" maxlength="4" required placeholder="چهار رقم آخر کارت">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tracking_code" class="form-label">کد پیگیری <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="tracking_code" name="tracking_code" required placeholder="کد رهگیری پرداخت">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pay_datetime" class="form-label">تاریخ و زمان واریز <span class="text-danger">*</span></label>
+                        <div class="row g-2">
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="pay_date" name="pay_date" required placeholder="مثلاً 1404/01/01">
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="pay_time" name="pay_time" required placeholder="مثلاً 12:30">
+                            </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">بارگذاری رسید پرداختی</label>
+                        <div class="border rounded bg-light-subtle py-4 text-center position-relative" style="min-height:80px;">
+                            <span class="d-block mb-2" style="font-size:2rem; color:#aaa;"><i class="bi bi-folder2-open"></i></span>
+                            <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/folder2-open.svg" alt="آپلود" width="28" class="mb-2">
+                            <div class="fw-normal text-muted">برای آپلود فایل، آن را به این قسمت بکشید یا کلیک کنید.</div>
+                            <input type="file" id="pay_receipt" name="pay_receipt" class="position-absolute w-100 h-100 opacity-0 top-0 start-0" style="cursor:pointer;" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5">
+                <div class="border rounded p-3 bg-light mb-3">
+                    <div class="mb-2 small text-muted">نوع بیماری</div>
+                    <div class="fw-bold mb-3">سرطان پستان</div>
+                    <div class="mb-2 small text-muted">شماره کارت جهت واریز وجه</div>
+                    <div class="bg-primary text-white text-center rounded py-2 mb-2 fw-bold" style="font-size:1.1rem;letter-spacing:1px;">5041-7212-3445-9049</div>
+                    <div class="small text-muted">به نام مهدی حاجی افشاری</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-outline-secondary ms-2" id="prev-step-5">قبلی</button>
+        <button type="submit" class="btn btn-success" id="submit-form">ارسال</button>
+    </div>
+</div>
                 </div>
             </div>
         </div>
